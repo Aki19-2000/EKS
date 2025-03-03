@@ -13,16 +13,18 @@ module "vpc" {
 
 
 module "eks" {
-  source      = "./modules/eks"
-  cluster_name = "my-cluster"
-  subnet_ids    = [module.vpc.subnet_public_id, module.vpc.subnet_private_id]
-  instance_types = ["t3.medium"]
+  source        = "./modules/eks"
+  cluster_name  = var.cluster_name
+  subnet_ids    = var.subnet_ids
+  instance_types = var.instance_types
+  vpc_id        = var.vpc_id
 }
 
 module "security_groups" {
   source = "./modules/security_groups"
-  vpc_id = module.vpc.vpc_id
+  vpc_id = var.vpc_id
 }
+
 
 module "kubernetes" {
   source = "./modules/kubernetes"
