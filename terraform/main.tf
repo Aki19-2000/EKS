@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
 }
 
 module "vpc" {
@@ -7,8 +7,8 @@ module "vpc" {
   cidr_block           = "10.0.0.0/16"
   public_subnet_cidr   = "10.0.1.0/24"
   private_subnet_cidr  = "10.0.2.0/24"
-  availability_zone_1  = "us-west-2a"  # AZ 1
-  availability_zone_2  = "us-west-2b"  # AZ 2
+  availability_zone_1  = "us-east-1a"  # AZ 1
+  availability_zone_2  = "us-east-1b"  # AZ 2
 }
 
 
