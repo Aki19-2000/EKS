@@ -1,4 +1,6 @@
+# modules/security_groups/variables.tf
+
 variable "vpc_id" {
-  description = "The ID of the VPC to associate with the security group"
+  description = "VPC ID where the security group will be created"
   type        = string
 }
