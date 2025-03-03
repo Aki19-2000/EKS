@@ -1,0 +1,42 @@
+name: Destroy Application
+
+on:
+  workflow_dispatch:  # Allows manual trigger of the workflow
+
+jobs:
+  # Job 1: Checkout Code
+  JOB1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      # Configure AWS credentials for Terraform
+      - name: Configure AWS credentials for Terraform
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Initialize Terraform
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform  # Ensure Terraform runs from the correct directory
+
+      # Run Terraform plan
+      - name: Terraform Plan
+        run: terraform plan 
+        working-directory: terraform  # Ensure Terraform runs from the correct directory
+
+      # Apply Terraform to create resources (e.g., ECR repositories)
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+        working-directory: terraform  # Ensure Terraform runs from the correct directory
+
+  
+     
