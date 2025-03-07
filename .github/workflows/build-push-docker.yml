@@ -27,19 +27,13 @@ jobs:
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Step 4: Build the patient-service Docker image
-      - name: Build patient-service Docker image
-        run: |
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/patient-service:latest -f app/patient-service/Dockerfile app/patient-service
+  
 
 # Step 5: Build the appointment-service Docker image
       - name: Build appointment-service Docker image
         run: |
           docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/appointment-service:latest -f app/appointment-service/Dockerfile app/appointment-service
-      # Step 6: Push patient-service Docker image to ECR
-      - name: Push patient-service Docker image to ECR
-        run: |
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/patient-service:latest
+      
 
       # Step 7: Push appointment-service Docker image to ECR
       - name: Push appointment-service Docker image to ECR
