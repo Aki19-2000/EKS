@@ -37,7 +37,9 @@ jobs:
       # Run Terraform plan
       - name: Terraform Plan
         run: terraform plan -out=tfplan
-        working-directory: terraform  #      # Apply Terraform to create resources (e.g., ECR repositories)
+        working-directory: terraform  # Ensure Terraform runs from the correct directory
+
+      # Apply Terraform to create resources (e.g., ECR repositories)
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
         working-directory: terraform  # Ensure Terraform runs from the correct directory
