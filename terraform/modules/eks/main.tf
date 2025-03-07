@@ -1,30 +1,31 @@
-module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = var.cluster_name
-  cluster_version = var.cluster_version
-  vpc_id          = var.vpc_id
-  subnet_ids      = var.subnet_ids
+resource "aws_eks_cluster" "this" {
+  name     = var.cluster_name
+  role_arn = aws_iam_role.eks.arn
+
+  vpc_config {
+    subnet_ids = var.subnet_ids
+  }
+
+  version = var.cluster_version
 }
 
-variable "cluster_name" {
-  description = "The name of the EKS cluster"
-  type        = string
+resource "aws_iam_role" "eks" {
+  name = "${var.cluster_name}-eks-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "eks.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      },
+    ]
+  })
 }
 
-variable "cluster_version" {
-  description = "The version of the EKS cluster"
-  type        = string
-}
-
-variable "vpc_id" {
-  description = "The VPC ID for the EKS cluster"
-  type        = string
-}
-
-variable "subnet_ids" {
-  description = "A list of subnets for the EKS cluster"
-  type        = list(string)
-}
 output "cluster_id" {
   value = aws_eks_cluster.this.id
 }
