@@ -5,17 +5,7 @@ module "eks" {
   vpc_id          = var.vpc_id
   subnet_ids      = var.subnet_ids
 
-  node_groups = {
-    node_group_1 = {
-      desired_capacity = 2
-      max_capacity     = 3
-      min_capacity     = 1
-
-      instance_type = "t3.medium"
-
-      key_name = "my-key"
-    }
-  }
+  node_groups = var.node_groups
 }
 
 variable "cluster_name" {
