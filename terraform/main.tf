@@ -14,9 +14,9 @@ module "vpc" {
 module "eks" {
   source        = "./modules/eks"
   cluster_name  = var.cluster_name
-  subnet_ids    = [module.vpc.subnet_public_id, module.vpc.subnet_private_id]  # Correct reference of output values
+  subnet_ids    = [module.vpc.subnet_public_id, module.vpc.subnet_private_id]
   instance_types = var.instance_types
-  vpc_id        = module.vpc.vpc_id  # Correctly getting the VPC ID from the VPC module
+  vpc_id        = module.vpc.vpc_id
 }
 
 
