@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 module "vpc" {
   source               = "./modules/vpc"
   cidr_block           = "10.0.0.0/16"
@@ -17,15 +13,19 @@ module "eks" {
   subnet_ids    = [module.vpc.subnet_public_id, module.vpc.subnet_private_id]
   instance_types = var.instance_types
   vpc_id        = module.vpc.vpc_id
+
+  depends_on = [module.vpc]  # Add dependency on the VPC module
 }
-
-
 
 module "security_groups" {
   source = "./modules/security_groups"
-  vpc_id = module.vpc.vpc_id  # Use the VPC ID from the VPC module
+  vpc_id = module.vpc.vpc_id
+
+  depends_on = [module.vpc]  # Add dependency on the VPC module
 }
 
 module "kubernetes" {
   source = "./modules/kubernetes"
+
+  depends_on = [module.eks]  # Add dependency on the EKS module
 }
