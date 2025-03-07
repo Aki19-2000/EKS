@@ -13,17 +13,24 @@ module "eks" {
   cluster_version = "1.21"
   vpc_id          = module.vpc.vpc_id
   subnet_ids      = module.vpc.public_subnets
+}
 
-  node_groups = {
-    node_group_1 = {
-      desired_capacity = 2
-      max_capacity     = 3
-      min_capacity     = 1
+resource "aws_eks_node_group" "node_group" {
+  cluster_name    = module.eks.cluster_id
+  node_group_name = "example"
+  node_role_arn   = aws_iam_role.node_group.arn
+  subnet_ids      = module.vpc.public_subnets
 
-      instance_type = "t3.medium"
+  scaling_config {
+    desired_size = 2
+    max_size     = 3
+    min_size     = 1
+  }
 
-      key_name = "my-key"
-    }
+  instance_types = ["t3.medium"]
+
+  remote_access {
+    ec2_ssh_key = "my-key"
   }
 }
 
