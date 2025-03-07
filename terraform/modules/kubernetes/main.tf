@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "appointment_service" {
       spec {
         container {
           name  = "appointment-service"
-          image = "your_ecr_image_url"
+          image = "510278866235.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest"
           port {
             container_port = 3001
           }
