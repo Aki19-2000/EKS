@@ -10,7 +10,7 @@ module "vpc" {
 module "eks" {
   source          = "./modules/eks"
   cluster_name    = "my-eks-cluster"
-  cluster_version = "1.21"
+  cluster_version = "1.32"  # Updated Kubernetes version
   vpc_id          = module.vpc.vpc_id
   subnet_ids      = module.vpc.public_subnets
 }
