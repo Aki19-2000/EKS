@@ -6,6 +6,7 @@ module "vpc" {
   private_subnets   = ["10.0.3.0/24", "10.0.4.0/24"]
   availability_zones = ["us-east-1a", "us-east-1b"]
 }
+
 module "eks" {
   source          = "./modules/eks"
   cluster_name    = "my-eks-cluster"
@@ -13,7 +14,6 @@ module "eks" {
   vpc_id          = module.vpc.vpc_id
   subnet_ids      = module.vpc.public_subnets
 }
-
 
 resource "aws_iam_role" "node_group" {
   name = "eks-node-group-role"
@@ -106,10 +106,7 @@ resource "kubernetes_service" "appointment_service" {
     type = "LoadBalancer"
   }
 }
-Updated Outputs Configuration
-Update the outputs configuration to correctly reference the module outputs.
 
-outputs.tf
 output "vpc_id" {
   value = module.vpc.vpc_id
 }
