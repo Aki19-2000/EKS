@@ -1,6 +1,6 @@
 resource "aws_eks_cluster" "this" {
   name     = var.cluster_name
-  role_arn = aws_iam_role.eks.arn
+  role_arn = aws_iam_role.eks.arn  # This is fine as long as the role is defined beforehand.
 
   vpc_config {
     subnet_ids = var.subnet_ids
@@ -25,6 +25,7 @@ resource "aws_iam_role" "eks" {
     ]
   })
 }
+
 
 output "cluster_id" {
   value = aws_eks_cluster.this.id
