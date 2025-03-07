@@ -15,6 +15,23 @@ module "eks" {
   subnet_ids      = module.vpc.public_subnets
 }
 
+resource "aws_iam_role" "node_group" {
+  name = "eks-node-group-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      },
+    ]
+  })
+}
+
 resource "aws_eks_node_group" "node_group" {
   cluster_name    = module.eks.cluster_id
   node_group_name = "example"
