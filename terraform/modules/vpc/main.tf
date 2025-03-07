@@ -98,11 +98,6 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private.id
 }
 
-# Output the VPC ID
-output "vpc_id" {
-  value = aws_vpc.custom_vpc.id
-}
-
 # Output the Public Subnet ID
 output "subnet_public_id" {
   value = aws_subnet.subnet_public.id
@@ -112,3 +107,9 @@ output "subnet_public_id" {
 output "subnet_private_id" {
   value = aws_subnet.subnet_private.id
 }
+
+# Output the VPC ID
+output "vpc_id" {
+  value = aws_vpc.custom_vpc.id
+}
+
