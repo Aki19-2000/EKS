@@ -10,6 +10,7 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
+
 variable "instance_types" {
   description = "List of EC2 instance types for the worker nodes"
   type        = list(string)
