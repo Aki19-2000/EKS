@@ -1,82 +1,34 @@
-resource "aws_iam_role" "eks_role" {
-  name               = "eks-cluster-role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action    = "sts:AssumeRole"
-        Principal = {
-          Service = "eks.amazonaws.com"
-        }
-        Effect    = "Allow"
-        Sid       = ""
-      }
-    ]
-  })
+module "eks" {
+  source          = "terraform-aws-modules/eks/aws"
+  cluster_name    = var.cluster_name
+  cluster_version = var.cluster_version
+  subnets         = var.subnets
+  vpc_id          = var.vpc_id
+
+  node_groups = var.node_groups
 }
 
-resource "aws_iam_role_policy_attachment" "eks_policy" {
-  role       = aws_iam_role.eks_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+variable "cluster_name" {
+  description = "The name of the EKS cluster"
+  type        = string
 }
 
-resource "aws_iam_role" "eks_node_role" {
-  name               = "eks-node-group-role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action    = "sts:AssumeRole"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-        Effect    = "Allow"
-        Sid       = ""
-      }
-    ]
-  })
+variable "cluster_version" {
+  description = "The version of the EKS cluster"
+  type        = string
 }
 
-# Attach policies to the IAM role for the EKS node group
-resource "aws_iam_role_policy_attachment" "eks_worker_node_policy" {
-  role       = aws_iam_role.eks_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+variable "subnets" {
+  description = "A list of subnets for the EKS cluster"
+  type        = list(string)
 }
 
-resource "aws_iam_role_policy_attachment" "eks_worker_ecr_policy" {
-  role       = aws_iam_role.eks_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+variable "vpc_id" {
+  description = "The VPC ID for the EKS cluster"
+  type        = string
 }
 
-resource "aws_iam_role_policy_attachment" "eks_cni_policy" {
-  role       = aws_iam_role.eks_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-}
-
-resource "aws_eks_cluster" "main" {
-  name     = var.cluster_name
-  role_arn = aws_iam_role.eks_role.arn  # Reference the IAM role for EKS cluster
-
-  vpc_config {
-    subnet_ids             = var.subnet_ids
-    endpoint_public_access = true
-  }
-
-  depends_on = [aws_iam_role_policy_attachment.eks_policy]
-}
-
-resource "aws_eks_node_group" "node_group" {
-  cluster_name    = aws_eks_cluster.main.name
-  node_group_name = "worker-group"
-  node_role_arn   = aws_iam_role.eks_node_role.arn  # Use the IAM role for the node group
-  subnet_ids      = var.subnet_ids
-  instance_types  = var.instance_types
-
-  scaling_config {
-    desired_size = 2
-    max_size     = 3
-    min_size     = 1
-  }
-
-  depends_on = [aws_eks_cluster.main]
+variable "node_groups" {
+  description = "A map of node group configurations"
+  type        = map(any)
 }
