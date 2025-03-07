@@ -34,10 +34,11 @@ jobs:
       - name: Set TF_LOG to DEBUG
         run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
 
-     : terraform plan -out=tfplan
-        working-directory: terraform  # Ensure Terraform runs from the correct directory
+      - name: Terraform plan
+        run: terraform plan 
+        working-directory: terraform
 
-      # Apply Terraform to create resources (e.g., ECR repositories)
+      # Apply Terraform to create resources 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve 
         working-directory: terraform  # Ensure Terraform runs from the correct directory
