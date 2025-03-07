@@ -33,7 +33,7 @@ resource "aws_iam_role" "node_group" {
 }
 
 resource "aws_eks_node_group" "node_group" {
-  cluster_name    = module.eks.cluster_id
+  cluster_name    = module.eks.cluster_name
   node_group_name = "example"
   node_role_arn   = aws_iam_role.node_group.arn
   subnet_ids      = module.vpc.public_subnets
