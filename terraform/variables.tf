@@ -13,7 +13,9 @@ variable "subnet_ids" {
 variable "instance_types" {
   description = "List of EC2 instance types for the worker nodes"
   type        = list(string)
+  default     = ["t3.medium"]  # You can change this as needed
 }
+
 
 variable "vpc_id" {
   description = "VPC ID where the EKS cluster and security group will be deployed"
