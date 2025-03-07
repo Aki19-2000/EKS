@@ -14,10 +14,11 @@ module "vpc" {
 module "eks" {
   source        = "./modules/eks"
   cluster_name  = var.cluster_name
-  subnet_ids    = [module.vpc.subnet_public_id, module.vpc.subnet_private_id]  # Use the outputs from the VPC module
+  subnet_ids    = [module.vpc.subnet_public_id, module.vpc.subnet_private_id]  # <- Correct reference
   instance_types = var.instance_types
-  vpc_id        = module.vpc.vpc_id  # Get VPC ID from module output
+  vpc_id        = module.vpc.vpc_id
 }
+
 
 module "security_groups" {
   source = "./modules/security_groups"
