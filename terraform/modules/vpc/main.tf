@@ -81,3 +81,10 @@ variable "availability_zones" {
   description = "A list of availability zones"
   type        = list(string)
 }
+output "vpc_id" {
+  value = aws_vpc.this.id
+}
+
+output "public_subnets" {
+  value = aws_subnet.public[*].id
+}
