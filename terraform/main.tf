@@ -44,10 +44,10 @@ resource "aws_eks_node_group" "node_group" {
     min_size     = 1
   }
 
-  instance_types = ["t3.large"]  # Change instance type if necessary
+  instance_types = ["t3.large"]  # Adjusted instance type for more resources
 
   remote_access {
-    ec2_ssh_key = "my-key"
+    ec2_ssh_key = "my-key"  # Ensure the key pair is available in your AWS account
   }
 }
 
@@ -86,40 +86,7 @@ resource "kubernetes_deployment" "appointment_service" {
       }
     }
   }
-
-  # Increase timeout for waiting on the deployment to complete
-  timeout {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
-  }
 }
-
-resource "kubernetes_service" "appointment_service" {
-  metadata {
-    name = "appointment-service"
-  }
-
-  spec {
-    selector = {
-      app = "appointment-service"
-    }
-
-    port {
-      port        = 80
-      target_port = 3001
-    }
-
-    type = "LoadBalancer"
-  }
-
-  # Increase timeout for the service to be fully created
-  timeout {
-    create = "20m"
-    delete = "20m"
-  }
-}
-
 
 resource "kubernetes_service" "appointment_service" {
   metadata {
