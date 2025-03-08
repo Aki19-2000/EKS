@@ -87,7 +87,40 @@ resource "kubernetes_deployment" "appointment_service" {
       }
     }
   }
+
+  # Increase timeout for waiting on the deployment to complete
+  timeout {
+    create = "30m"
+    update = "30m"
+    delete = "30m"
+  }
 }
+
+resource "kubernetes_service" "appointment_service" {
+  metadata {
+    name = "appointment-service"
+  }
+
+  spec {
+    selector = {
+      app = "appointment-service"
+    }
+
+    port {
+      port        = 80
+      target_port = 3001
+    }
+
+    type = "LoadBalancer"
+  }
+
+  # Increase timeout for the service to be fully created
+  timeout {
+    create = "20m"
+    delete = "20m"
+  }
+}
+
 
 resource "kubernetes_service" "appointment_service" {
   metadata {
