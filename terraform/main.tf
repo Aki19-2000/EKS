@@ -47,7 +47,7 @@ resource "aws_eks_node_group" "node_group" {
   instance_types = ["t3.large"]
 
   remote_access {
-    ec2_ssh_key = "my-key"  # Ensure the key pair is available in your AWS account
+    ec2_ssh_key = aws_key_pair.my_key.key_name
   }
 }
 
