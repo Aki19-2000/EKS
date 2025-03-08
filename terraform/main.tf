@@ -46,9 +46,7 @@ resource "aws_eks_node_group" "node_group" {
 
   instance_types = ["t3.large"]
 
-  remote_access {
-    ec2_ssh_key = aws_key_pair.my_key.key_name
-  }
+  # Removed the `remote_access` block to avoid the key pair requirement
 }
 
 output "vpc_id" {
