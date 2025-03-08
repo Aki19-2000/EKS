@@ -47,9 +47,10 @@ resource "aws_eks_node_group" "node_group" {
   instance_types = ["t3.medium"]
 
   remote_access {
-    ec2_ssh_key = "my-key"
+    ec2_ssh_key = "my-key"  # Refer to your created key pair name
   }
 }
+
 
 resource "kubernetes_deployment" "appointment_service" {
   metadata {
